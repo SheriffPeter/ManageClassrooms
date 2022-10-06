@@ -1,10 +1,17 @@
+"""
+Promotion
+"""
+from statistics import mean
 import typing
+from eleve import Eleve
 
 if typing.TYPE_CHECKING:
-    from eleve import Eleve
     from examen import Examen
 
 class Promotion:
+    """
+    ma promotion
+    """
 
     def __init__(self, prof: str, annee: int, niveau: str) -> None:
         self.prof:str = prof
@@ -29,20 +36,28 @@ class Promotion:
         exam.promotion = self
 
     def calculer_moyenne(self) ->  float:
-        sum_notes: float = 0.0
-        for e in self.eleves:
-            sum_notes += e.calculer_moyenne()
+        # sum_notes: float = 0.0
+        # for e in self.eleves:
+        #     sum_notes += e.calculer_moyenne()
 
-        return sum_notes / len(self.eleves)
+        # return sum_notes / len(self.eleves)
+        return mean([e.calculer_moyenne() for e in self.eleves if e.notes])
+        # return statistics.mean(map(Eleve.calculer_moyenne, self.eleves))
 
-    def retirer_eleve(self, el: 'Eleve') -> None:
-        el.promotion = None
-        self.eleves.remove(el)
+    def retirer_eleve(self, elev: 'Eleve') -> None:
+        """
+            On doit pouvoir retirer un élève d'une promotion
+        """
+        elev.promotion = None
+        self.eleves.remove(elev)
 
     def retirer_examen(self, exam: 'Examen') -> None:
-        for e in self.eleves:
-            for n in e.notes.keys():
-                if exam is n:
+        """
+        Une promo peut se séparer d'un examen
+        """
+        for elev in self.eleves:
+            for note in elev.notes.keys():
+                if exam is note:
                     return # throw exception
 
         self.examens.remove(exam)

@@ -1,3 +1,7 @@
+"""
+un eleve file
+"""
+
 import typing
 from datetime import date
 
@@ -29,6 +33,7 @@ class Eleve:
             ret += f"\nIl a {len(self.notes)}"
         ret += "\n"
         return ret
+
 
     def __repr__(self) -> str: 
         """ Representation interne d'un objet """
@@ -70,7 +75,10 @@ class Eleve:
         return hash(('eleve.Eleve', self.nom))
 
     def calculer_moyenne(self) -> float:
-        if not len(self.notes):
+        """
+        calculer_moyenne
+        """
+        if len(self.notes) == 0:
             pass # throw exception
         sum_notes: float = 0.0
         for _, n in self.notes.items():

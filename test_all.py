@@ -1,14 +1,23 @@
+
+"""
+Fichier des tests unitaires et d'intégration
+"""
+
 from datetime import date
+from textwrap import dedent
 from eleve import Eleve
 from promotion import Promotion
 from examen import Examen
-from textwrap import dedent
 
 #### Fonction générique ####
 
 
 ##### Test Eleve ####
-def test_el_TU():
+def test_el_tu():
+    """
+    On essaie de tester untairement notre class Eleve
+    C'et compliqué car toutes les classes doivent se connaitre
+    """
     el = Eleve(nom = "marchal", prenom="Pierre", date_naissance=date(year=1990, month=2, day=23))
     assert el.nom == 'marchal'
     assert el.prenom == 'Pierre'
