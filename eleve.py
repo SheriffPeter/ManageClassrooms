@@ -1,10 +1,10 @@
 import typing
+from datetime import date
 
 #On met ça pour éviter les import circulaires
 if typing.TYPE_CHECKING:
     from promotion import Promotion
     from examen import Examen
-    from datetime import date
 
 class Eleve:
 
@@ -46,16 +46,21 @@ class Eleve:
     def __le__(self, other: 'Eleve') -> bool:
         return self.calculer_moyenne() <= other.calculer_moyenne()
 
-    def __eq__(self, other: typing.Any) -> bool:
-        if not other.calculer_moyenne:
-            return False
-        return self.calculer_moyenne() == other.calculer_moyenne()
 
-    def __ne__(self, other: typing.Any) -> bool:
-        if not other.calculer_moyenne:
-            return True
-        return self.calculer_moyenne() != other.calculer_moyenne()
+########################################################################################
+    """ What is the need to redefine eq and ne?????"""
 
+    #redéfinir un __eq__ nécessite toujours de redéfinir la fonction __hash__
+    # def __eq__(self, other: typing.Any) -> bool:
+    #     if not other.calculer_moyenne:
+    #         return False
+    #     return self.calculer_moyenne() == other.calculer_moyenne()
+
+    # def __ne__(self, other: typing.Any) -> bool:
+    #     if not other.calculer_moyenne:
+    #         return True
+    #     return self.calculer_moyenne() != other.calculer_moyenne()
+################################################################################################
     def __hash__(self) -> int:
         """ Eleve n'était plus iterable car ça dépend de ses atrributs interne
             S'il y a des attributes non hashsables la fonction hash qui utilise le hash des attributs
