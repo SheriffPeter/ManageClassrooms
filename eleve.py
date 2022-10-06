@@ -12,7 +12,6 @@ class Eleve:
         self.nom = nom
         self.prenom = prenom
         self.date_naissance = date_naissance
-        
         self.promotion: typing.Optional['Promotion'] = None
         self.notes: dict['Examen', float] = {}
 
@@ -23,10 +22,8 @@ class Eleve:
             ret += f"\nIl n'a pas encore été inscrit dans une classe."
         else:
             ret += f"\nIl est dans la promotion {self.promotion.niveau}.{self.promotion.annee}"
-        
         if len(self.notes):
             ret += f"\nIl a {len(self.notes)}"
-
         ret += "\n"
         return ret
 
@@ -47,7 +44,7 @@ class Eleve:
         return self.calculer_moyenne() <= other.calculer_moyenne()
 
 
-########################################################################################
+#################################################################
     """ What is the need to redefine eq and ne?????"""
 
     #redéfinir un __eq__ nécessite toujours de redéfinir la fonction __hash__
@@ -60,7 +57,7 @@ class Eleve:
     #     if not other.calculer_moyenne:
     #         return True
     #     return self.calculer_moyenne() != other.calculer_moyenne()
-################################################################################################
+###################################################################
     def __hash__(self) -> int:
         """ Eleve n'était plus iterable car ça dépend de ses atrributs interne
             S'il y a des attributes non hashsables la fonction hash qui utilise le hash des attributs
