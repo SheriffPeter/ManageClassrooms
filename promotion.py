@@ -18,7 +18,7 @@ class Promotion:
         return f'Promotion {self.niveau}.{self.annee} de {self.prof}'
 
     def __repr__(self) -> str:
-         return f'<{type(self).__name__} object: {self.niveau}.{self.annee}{self.prof}>'
+        return f'<{type(self).__name__} object: {self.niveau}.{self.annee}{self.prof}>'
 
     def ajouter_eleve(self, el: 'Eleve') -> None:
         self.eleves.append(el)
@@ -29,11 +29,11 @@ class Promotion:
         exam.promotion = self
 
     def calculer_moyenne(self) ->  float:
-        sum: float = 0.0
+        sum_notes: float = 0.0
         for e in self.eleves:
-            sum += e.calculer_moyenne()
+            sum_notes += e.calculer_moyenne()
 
-        return sum / len(self.eleves)
+        return sum_notes / len(self.eleves)
 
     def retirer_eleve(self, el: 'Eleve') -> None:
         el.promotion = None

@@ -26,14 +26,14 @@ class Examen:
         #we need to get all the notes from all the students of the given promo that passed that specific exam
         # get all the notes of that exam.
         nb: int = 0
-        sum: float = 0.0
+        sum_notes: float = 0.0
         for e in self.promotion.eleves:
             if self in e.notes.keys():
                 nb += 1
-                sum += e.notes[self]
+                sum_notes += e.notes[self]
         
         if nb > 0:
-            return sum / nb
+            return sum_notes / nb
         else : 
             return -1.0 # make exception
 

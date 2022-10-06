@@ -7,6 +7,9 @@ if typing.TYPE_CHECKING:
     from examen import Examen
 
 class Eleve:
+    """
+    Our Eleve class
+    """
 
     def __init__(self, nom: str, prenom: str, date_naissance: date) -> None:
         self.nom = nom
@@ -19,7 +22,7 @@ class Eleve:
         """ Comment voulons nous afficher un eleve en string """
         ret: str =  f"L'eleve {self.prenom} {self.nom.upper()} est né en {self.date_naissance}."
         if self.promotion is None:
-            ret += f"\nIl n'a pas encore été inscrit dans une classe."
+            ret += "\nIl n'a pas encore été inscrit dans une classe."
         else:
             ret += f"\nIl est dans la promotion {self.promotion.niveau}.{self.promotion.annee}"
         if len(self.notes):
@@ -45,7 +48,7 @@ class Eleve:
 
 
 #################################################################
-    """ What is the need to redefine eq and ne?????"""
+    # What is the need to redefine eq and ne?????"""
 
     #redéfinir un __eq__ nécessite toujours de redéfinir la fonction __hash__
     # def __eq__(self, other: typing.Any) -> bool:
@@ -69,10 +72,10 @@ class Eleve:
     def calculer_moyenne(self) -> float:
         if not len(self.notes):
             pass # throw exception
-        sum: float = 0.0
+        sum_notes: float = 0.0
         for _, n in self.notes.items():
-            sum += n
-        return sum / len(self.notes)
+            sum_notes += n
+        return sum_notes / len(self.notes)
 
     def ajouter_note(self,exam: 'Examen', note: float) -> None:
         if not (0.0 < note < 20.0):
@@ -87,6 +90,9 @@ class Eleve:
 
 
     def modifier_note(self,exam: 'Examen', note: float) -> None:
+        """
+        update notes
+        """
         if not (0.0 < note < 20.0):
             pass # throw exception
         
