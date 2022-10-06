@@ -1,10 +1,10 @@
-from datetime import date
 import typing
 
+#On met ça pour éviter les import circulaires
 if typing.TYPE_CHECKING:
     from promotion import Promotion
     from examen import Examen
-
+    from datetime import date
 
 class Eleve:
 
@@ -17,6 +17,7 @@ class Eleve:
         self.notes: dict['Examen', float] = {}
 
     def __str__(self) -> str:
+        """ Comment voulons nous afficher un eleve en string """
         ret: str =  f"L'eleve {self.prenom} {self.nom.upper()} est né en {self.date_naissance}."
         if self.promotion is None:
             ret += f"\nIl n'a pas encore été inscrit dans une classe."
@@ -30,6 +31,7 @@ class Eleve:
         return ret
 
     def __repr__(self) -> str: 
+        """ Representation interne d'un objet """
         return f'<{type(self).__name__} object: {self.prenom.lower()}{self.nom.lower()}>'
 
     def __gt__(self, other: 'Eleve') -> bool:
@@ -55,6 +57,11 @@ class Eleve:
         return self.calculer_moyenne() != other.calculer_moyenne()
 
     def __hash__(self) -> int:
+        """ Eleve n'était plus iterable car ça dépend de ses atrributs interne
+            S'il y a des attributes non hashsables la fonction hash qui utilise le hash des attributs
+            et ainsi de suite récursivement ne fonctionne plus.
+            Il faut la redéfinir nous mêmes pour éviter ce pb. Le mieux est de créer un tuple comme suit.
+            """
         return hash(('eleve.Eleve', self.nom))
 
     def calculer_moyenne(self) -> float:
