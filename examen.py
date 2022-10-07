@@ -1,3 +1,6 @@
+"""
+Description d'un examen
+"""
 from datetime import date
 import typing
 
@@ -6,6 +9,9 @@ if typing.TYPE_CHECKING:
     from eleve import Eleve
 
 class Examen:
+    """
+        Notre objet examen
+    """
 
     def __init__(self, nom: str, matiere: str, date_exam: date, promotion: 'Promotion') -> None:
         self.nom:str = nom
@@ -17,28 +23,32 @@ class Examen:
         return f'Examen {self.nom} de {self.matiere} du {self.date_exam}, promo {self.promotion}'
 
     def __repr__(self) -> str:
-        return f'<{type(self).__name__} object: {self.nom}{self.matiere}{self.date_exam}{self.promotion}>'
+        return f'<{type(self).__name__} object: \
+            {self.nom}{self.matiere}{self.date_exam}{self.promotion}>'
 
     def calculer_moyenne(self) -> float:
         """
         compute the average of all notes if this specific exam
         """
-        #we need to get all the notes from all the students of the given promo that passed that specific exam
+        # we need to get all the notes from all the students of the given promo that passed 
+        # that specific exam
         # get all the notes of that exam.
-        nb: int = 0
+        number: int = 0
         sum_notes: float = 0.0
         for e in self.promotion.eleves:
             if self in e.notes.keys():
-                nb += 1
+                number += 1
                 sum_notes += e.notes[self]
-        
-        if nb > 0:
-            return sum_notes / nb
-        else : 
+        if number > 0:
+            return sum_notes / number
+        else: 
             return -1.0 # make exception
 
 
     def min(self) -> float:
+        """
+            Trouver la note la plus basse
+        """
         exam_notes = self.recuperer_notes()
 
         return min(exam_notes.values())

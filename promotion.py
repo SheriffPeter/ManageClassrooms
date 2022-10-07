@@ -18,7 +18,7 @@ class Promotion:
         self.annee:int = annee
         self.niveau:str = niveau
 
-        self.eleves: list['Eleve'] = []
+        self.eleves: list[Eleve] = []
         self.examens: list['Examen'] = []
 
     def __str__(self) -> str:
@@ -28,14 +28,23 @@ class Promotion:
         return f'<{type(self).__name__} object: {self.niveau}.{self.annee}{self.prof}>'
 
     def ajouter_eleve(self, el: 'Eleve') -> None:
+        """
+        Ajouter un élève à une promotion
+        """
         self.eleves.append(el)
         el.promotion = self
 
     def ajouter_examen(self, exam: 'Examen') -> None:
+        """
+        ajouter un examen à une promotion
+        """
         self.examens.append(exam)
         exam.promotion = self
 
     def calculer_moyenne(self) ->  float:
+        """
+        Calcul la moyenne d'une promo
+        """
         # sum_notes: float = 0.0
         # for e in self.eleves:
         #     sum_notes += e.calculer_moyenne()
@@ -63,10 +72,13 @@ class Promotion:
         self.examens.remove(exam)
 
     def retirer_notes(self, exam: 'Examen') -> None:
-        for e in self.eleves:
-            for n in e.notes.keys():
-                if exam is n:
-                    del e.notes[n]
+        """
+        Si l'on veut supprimer les notes de tous les élèves d'une promo correspondant à un examen
+        """
+        for elev in self.eleves:
+            for note in elev.notes.keys():
+                if exam is note:
+                    del elev.notes[note]
 
     def calculer_classement(self) -> list[tuple[int,'Eleve', float]]:
         classement: list[tuple['Eleve', float]] = []
