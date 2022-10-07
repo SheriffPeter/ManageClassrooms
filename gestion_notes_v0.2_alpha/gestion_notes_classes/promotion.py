@@ -85,6 +85,9 @@ class Promotion(Base):
         with open(fichier, 'w') as fd:
             json.dump(self.to_dict(), fd, indent=3)
 
+    @classmethod
+    def charger(cls, ) # TODO
+
     def to_dict(self) -> PromotionDict:
         """
         Sérialisation de l'objet Promotion
@@ -102,7 +105,8 @@ class Promotion(Base):
         return seri_dict
         # ensuite on ajoute les serialisations de eleves et examens en les appelants diretement
             
-    def from_dict(my_dict: PromotionDict) -> 'Promotion':  # type: ignore
+    @classmethod
+    def from_dict(cls,my_dict: PromotionDict) -> 'Promotion':  # type: ignore
         """
         Il faut commencer par récupérer les informations de bases, les faciles.
 
@@ -129,7 +133,7 @@ class Promotion(Base):
         
         # On commence par récupérer les examens
         try: 
-            promo.examens = [Eleve.from_dict(ex) for ex in my_dict['eleves']]
+            promo.eleves = [Eleve.from_dict(el, promo) for el in my_dict['eleves']]
         except KeyError as ve:
             print(f'Your dictionnary is missing eleves, WTF DUDE ?! {ve}')
 

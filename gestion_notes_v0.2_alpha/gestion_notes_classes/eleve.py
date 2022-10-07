@@ -73,3 +73,7 @@ class Eleve(Base):
             'date_naissance': date.isoformat(self.date_naissance),
             'notes': [(hash(e),n) for e,n in self.notes.items()],
         }
+
+    @classmethod
+    def from_dict(cls, data: EleveDict,promo: Promotion) -> 'Eleve':
+        return cls(nom=data['nom'], prenom=data['prenom'], date_naissance = date.fromisoformat(data['date_naissance']))

@@ -58,7 +58,8 @@ class Examen(Base):
                 'hash': hash(self),
         }
 
-    def from_dict(my_dict: ExamenDict, promo: 'Promotion') -> 'Examen':
+    @classmethod
+    def from_dict(cls,my_dict: ExamenDict, promo: 'Promotion') -> 'Examen':
         exam = Examen(nom="", matiere="", date_exam=date.today(), promotion=promo)
 
         return exam
