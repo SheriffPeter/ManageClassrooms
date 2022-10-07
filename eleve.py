@@ -78,12 +78,15 @@ class Eleve:
         """
         calculer_moyenne
         """
+        breakpoint()
         if len(self.notes) == 0:
             pass # throw exception
         sum_notes: float = 0.0
-        for _, n in self.notes.items():
+        for n in self.notes.values():
             sum_notes += n
+        # sum_notes = sum(self.notes.values())
         return sum_notes / len(self.notes)
+        # return mean(self.notes.values())
 
     def ajouter_note(self,exam: 'Examen', note: float) -> None:
         if not (0.0 < note < 20.0):
