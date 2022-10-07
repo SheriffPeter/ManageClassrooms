@@ -1,6 +1,7 @@
 """
 Promotion
 """
+import pickle
 from statistics import mean
 import typing
 from eleve import Eleve
@@ -94,6 +95,10 @@ class Promotion:
         ret = [(p, c[0], c[1]) for p,c in enumerate(classement, start=1)]
 
         return ret
+
+    def sauvegarder(self, fichier: str):
+        with open(fichier, 'wb') as fd:
+        pickle.dump(self, fd)
 
 
 if __name__ == "__main__":

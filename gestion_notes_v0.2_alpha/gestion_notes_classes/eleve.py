@@ -1,11 +1,18 @@
 from datetime import date
 from statistics import mean
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, TypedDict
 from . import Base, exceptions
 
 
 if TYPE_CHECKING:
     from . import Examen, Promotion
+
+
+class EleveDict(TypedDict):
+    nom: str
+    prenom: str
+    date_naissance: str
+    notes: list[tuple[int, float]]
 
 
 class Eleve(Base):
@@ -58,3 +65,11 @@ class Eleve(Base):
 
     def calculer_moyenne(self) -> float:
         return mean(self.notes.values())
+
+    def to_dict(self) -> EleveDict:
+        return {
+            'nom': self.nom,
+            'prenom': self.prenom,
+            'date_naissance': date.isoformat(self.date_naissance),
+            'notes': [(hash(e),n) for e,n in self.notes.items()],
+        }

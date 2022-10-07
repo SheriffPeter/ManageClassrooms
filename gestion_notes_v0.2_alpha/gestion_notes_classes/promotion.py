@@ -1,4 +1,5 @@
-import pickle
+import typing
+import json
 from statistics import StatisticsError, mean
 from typing import TYPE_CHECKING, Iterable
 
@@ -7,7 +8,16 @@ from . import Base, exceptions
 
 if TYPE_CHECKING:
     from . import Eleve, Examen
+    from .eleve import EleveDict
+    from .examen import ExamenDict
 
+
+class PromotionDict(typing.TypedDict):
+    prof: str
+    annee: int
+    niveau: str
+    eleves: list['EleveDict']
+    examens: list['ExamenDict']
 
 class Promotion(Base):
     
@@ -72,5 +82,55 @@ class Promotion(Base):
         return filter(lambda e: not e.notes, self.eleves)
 
     def sauvegarder(self, fichier: str):
-        with open(fichier, 'wb') as fd:
-            pickle.dump(self, fd)
+        with open(fichier, 'w') as fd:
+            json.dump(self.to_dict(), fd, indent=3)
+
+    def to_dict(self) -> PromotionDict:
+        """
+        Sérialisation de l'objet Promotion
+
+        On parcours l'objet en sérialisant par récursion.
+        Dès que l'on arrive sur un objet non sérialisable de notre implem (Eleve et Examen)
+        On appelle leurs propres fonctions de sérialisation.
+        On va créer un dictionnaire qui sera stringué ensuite
+        """
+        seri_dict: PromotionDict = {'prof': self.prof, 'annee': self.annee, 'niveau': self.niveau,
+                  'eleves': [el.to_dict() for el in self.eleves], 
+                  'examens': [ex.to_dict() for ex in self.examens],
+                  }
+        
+        return seri_dict
+        # ensuite on ajoute les serialisations de eleves et examens en les appelants diretement
+            
+    def from_dict(my_dict: PromotionDict) -> 'Promotion':  # type: ignore
+        """
+        Il faut commencer par récupérer les informations de bases, les faciles.
+
+        Ensuite on commence par récupérer les examens qui ne peuvent exister sans une promo
+        Et à la fin les élèves qui ont besoin d'un examen. It all makes sens \o/
+        """
+        promo = Promotion(prof="", annee=0, niveau="")
+        # On commence par récupérer les valeurs de bases
+        try:
+            promo.prof = str(my_dict['prof'])
+            promo.annee = int(my_dict['annee'])
+            promo.niveau = str(my_dict['niveau'])
+        except KeyError as ke:
+            print(f'Your dictionnary is missing an essential information {ke}')
+        except ValueError as ve:
+            print(f"One of the key value is not of the good type {ve}")
+
+        # On commence par récupérer les examens
+        try: 
+            promo.examens = [Examen.from_dict(ex, promo) for ex in my_dict['examens']]
+        except KeyError as ke:
+            print(f'Your dictionnary is missing examens, WTF DUDE ?! {ke}')
+
+        
+        # On commence par récupérer les examens
+        try: 
+            promo.examens = [Eleve.from_dict(ex) for ex in my_dict['eleves']]
+        except KeyError as ve:
+            print(f'Your dictionnary is missing eleves, WTF DUDE ?! {ve}')
+
+        return promo

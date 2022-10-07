@@ -44,7 +44,8 @@ def main():
         except StatisticsError:
             print(f'  - {ex} (aucune note)')
 
-    print(promo)
+    print(promo.to_dict())
+    
 
 
 if __name__ == '__main__':
